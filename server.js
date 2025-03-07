@@ -1,4 +1,4 @@
-require("dotenv").config(); // Load .env variables
+require("dotenv").config(); 
 
 const express = require("express");
 const cors = require("cors");
@@ -6,10 +6,10 @@ const nodemailer = require("nodemailer");
 
 const app = express();
 app.use(cors({
-    origin: ["https://gammaspectre.com.ng"], // Allow only your domain
-    methods: ["POST"],
-    allowedHeaders: ["Content-Type"],
-  }));
+  origin: ["https://gammaspectre.com.ng"], 
+  methods: ["POST"],
+  allowedHeaders: ["Content-Type"],
+}));
 app.use(express.json());
 
 const env_user = process.env.EMAIL_USER;
@@ -38,13 +38,14 @@ app.post("/send-email", (req, res) => {
     replyTo: email,
   };
 
- transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error("Email sending error:", error);
-    return res.status(500).json({ message: "Failed to send email.", error: error.message });
-  }
-  console.log("Email sent:", info.response);
-  res.json({ message: "Email sent successfully!" });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Email sending error:", error);
+      return res.status(500).json({ message: "Failed to send email.", error: error.message });
+    }
+    console.log("Email sent:", info.response);
+    res.json({ message: "Email sent successfully!" });
+  });
 });
 
 app.listen(5000, () => {
