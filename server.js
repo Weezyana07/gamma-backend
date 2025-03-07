@@ -38,12 +38,13 @@ app.post("/send-email", (req, res) => {
     replyTo: email,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).json({ message: "Failed to send email." });
-    }
-    res.json({ message: "Email sent successfully!" });
-  });
+ transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error("Email sending error:", error);
+    return res.status(500).json({ message: "Failed to send email.", error: error.message });
+  }
+  console.log("Email sent:", info.response);
+  res.json({ message: "Email sent successfully!" });
 });
 
 app.listen(5000, () => {
