@@ -5,7 +5,11 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ["https://gammaspectre.com.ng"], // Allow only your domain
+    methods: ["POST"],
+    allowedHeaders: ["Content-Type"],
+  }));
 app.use(express.json());
 
 const env_user = process.env.EMAIL_USER;
