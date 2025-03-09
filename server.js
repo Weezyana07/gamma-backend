@@ -12,9 +12,13 @@ app.use(
       const allowedOrigins = [
         "http://localhost:3000",
         "https://gammaspectre.com.ng",
-        "https://www.gammaspectre.com.ng"
+        "https://www.gammaspectre.com.ng",
       ];
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith("gammaspectre.com.ng")) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith("gammaspectre.com.ng")
+      ) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -24,14 +28,6 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
-// app.use(
-//   cors({
-//     origin: "*", // Temporarily allow all origins (for debugging)
-//     methods: ["POST"],
-//     allowedHeaders: ["Content-Type"],
-//   })
-// );
-
 
 app.use(express.json());
 
@@ -40,7 +36,6 @@ const env_user = process.env.EMAIL_USER;
 const env_pass = process.env.EMAIL_PASS;
 
 if (!env_user || !env_pass) {
-  console.error("❌ EMAIL_USER or EMAIL_PASS not set in .env file.");
   process.exit(1);
 }
 
@@ -62,22 +57,20 @@ app.post("/send-email", async (req, res) => {
 
     const mailOptions = {
       from: `"${name}" <${env_user}>`,
-      to: "admin@gammaspectre.com.ng",
+      to: "info@gammaspectre.com.ng",
       subject: subject,
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
       replyTo: email,
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully:", info.response);
     res.json({ message: "Email sent successfully!" });
   } catch (error) {
-    console.error("❌ Email sending error:", error);
-    res.status(500).json({ message: "Failed to send email.", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to send email.", error: error.message });
   }
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => {});
